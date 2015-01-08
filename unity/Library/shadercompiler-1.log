@@ -102,3 +102,113 @@ Cmd: compileSnippet
   api=4 type=0 insize=6940 outsize=10496 kw= ok=1
 Cmd: compileSnippet
   api=4 type=1 insize=6940 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7208 outsize=569 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6940 outsize=10496 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6940 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7208 outsize=569 ok=1
+Cmd: preprocess
+  insize=7214 outsize=569 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6946 outsize=10390 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6946 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7208 outsize=569 ok=1
+Cmd: preprocess
+  insize=7183 outsize=568 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6915 outsize=10407 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6915 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7208 outsize=568 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6940 outsize=10455 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6940 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7208 outsize=569 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6940 outsize=10455 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6940 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7184 outsize=569 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6916 outsize=10407 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6916 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7209 outsize=569 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6941 outsize=10447 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6941 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7208 outsize=569 ok=1
+Cmd: preprocess
+  insize=7209 outsize=569 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6941 outsize=10455 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6941 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7208 outsize=569 ok=1
+Cmd: preprocess
+  insize=7208 outsize=569 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6940 outsize=10455 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6940 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7208 outsize=569 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6940 outsize=10455 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6940 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7208 outsize=568 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6940 outsize=10455 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6940 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7214 outsize=568 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6946 outsize=9968 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6946 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7208 outsize=568 ok=1
+Cmd: preprocess
+  insize=7208 outsize=568 ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=6940 outsize=10455 kw= ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=6940 outsize=900 kw= ok=1
+Cmd: preprocess
+  insize=7208 outsize=568 ok=1
+Cmd: preprocess
+  insize=7209 outsize=569 ok=1
+Cmd: preprocess
+  insize=7209 outsize=569 ok=1
+Cmd: preprocess
+  insize=7197 outsize=570 ok=1
+Cmd: compileSnippet
+  error: 2 plat 4 at (117): cannot map expression to vs_4_0 instruction set
+  error: 1 plat 4 at (117): 'tex2D': implicit truncation of vector type
+  error: 1 plat 4 at (118): 'tex2D': implicit truncation of vector type
+  error: 1 plat 4 at (120): 'tex2D': implicit truncation of vector type
+  error: 1 plat 4 at (121): 'tex2D': implicit truncation of vector type
+  api=4 type=0 insize=6928 outsize=0 kw= ok=0
+Cmd: preprocess
+  insize=7157 outsize=570 ok=1
+Cmd: compileSnippet
+  error: 2 plat 4 at (117): cannot map expression to vs_4_0 instruction set
+  api=4 type=0 insize=6888 outsize=0 kw= ok=0
+Cmd: preprocess
+  insize=7209 outsize=569 ok=1

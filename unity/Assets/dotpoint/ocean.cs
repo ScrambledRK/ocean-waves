@@ -111,7 +111,7 @@ public class ocean : MonoBehaviour
 
 		// ------------------------ //
 
-		mesh.vertices = pos_ver;
+		//mesh.vertices = pos_ver;
 		texture.Apply(false);
 	}
 

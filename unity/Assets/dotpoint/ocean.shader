@@ -2,10 +2,10 @@
 {
 	Properties 
 	{
-		_N 			("N", 			Range(4.0, 	512.0) ) 	= 64
-		_L 			("LN", 			Range(4.0, 	512.0) ) 	= 64
+		_N 			("N", 			Range(4.0, 	512.0) ) 	= 32
+		_L 			("LN", 			Range(4.0, 	512.0) ) 	= 32
 		_gravity 	("_gravity", 	Range(0.0, 	20.0 ) ) 	= 9.81
-		_frequency 	("frequency", 	Range(1.0, 200.0) ) 	= 2.0
+		_frequency 	("frequency", 	Range(1.0, 200.0) ) 	= 64.0
 		_sharpness 	("sharpness", 	Range(0.0, 2.0) ) 		= 1.0
 		_amplitude 	("amplitude", 	Range(0.0, 2.0) ) 		= 1.0
 		_MainTex 	("wavemap", 2D ) = ""
@@ -196,7 +196,7 @@
 		        o.pos.y += d.y * -_sharpness;	
 		        o.pos.z = h.x * _amplitude;	
 		        
-		        o.norm 	= normalize( float3(0.0, 0.0, 1.0 ) - t );           	 
+		        o.norm 	= float3(0.0, 0.0, 1.0 ) - normalize( t );           	 
 		        o.pos 	= mul( UNITY_MATRIX_MVP, o.pos );
 
 		        return o;
@@ -214,7 +214,7 @@
 		        float3  norm  = v.norm; //normalize( cross( ddx( v.opos ), ddy( v.opos ) ) );             
 	            float   lpow  = dot( normalize( _WorldSpaceLightPos0.xyz ), norm );
 
-	            return fixed4( 0.0, 0.0, 1.0, 1.0) * ( lpow * 0.4 + 0.6 );
+	            return fixed4( 0.0, 0.0, 1.0, 1.0) * ( lpow * 0.7 + 0.3 );
 		    }
 			
 			ENDCG
