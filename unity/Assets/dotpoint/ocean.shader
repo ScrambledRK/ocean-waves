@@ -5,9 +5,9 @@
 		_N 			("N", 			Range(4.0, 	512.0) ) 	= 64
 		_L 			("LN", 			Range(4.0, 	512.0) ) 	= 64
 		_gravity 	("_gravity", 	Range(0.0, 	20.0 ) ) 	= 9.81
-		_frequency 	("frequency", 	Range(1.0, 200.0) ) 	= 200.0
-		_sharpness 	("sharpness", 	Range(0.0, 32.0) ) 		= 8.0
-		_amplitude 	("amplitude", 	Range(0.0, 32.0) ) 		= 8.0
+		_frequency 	("frequency", 	Range(1.0, 200.0) ) 	= 2.0
+		_sharpness 	("sharpness", 	Range(0.0, 2.0) ) 		= 1.0
+		_amplitude 	("amplitude", 	Range(0.0, 2.0) ) 		= 1.0
 		_MainTex 	("wavemap", 2D ) = ""
 	}
 	
@@ -20,7 +20,8 @@
 			CGPROGRAM		
 			#pragma vertex vert
 			#pragma fragment frag
-
+			#include "UnityCG.cginc"
+			
 			// ************************************************************************ //
 			// DFT Wave Shader
 			// ************************************************************************ //
@@ -72,14 +73,52 @@
 			}
 			
 			//
+			//CHPedersen - Christian H Pedersen via Stack Overflow ...
+			//
+			inline float UnpackFloatRGBA(float4 c)
+			{
+			     // First, convert the color to its byte values
+			     int4 bytes = c * 255;
+			 
+			     // Extract the sign byte of the float, i.e. the most significant bit in the red channel (and overall float structure)
+			     int sign = (bytes.r & 128) > 0 ? -1 : 1;
+			 
+			     // Extract the exponent's bit parts which are spread across both the red and the green channel
+			     int expR = (bytes.r & 127) << 1;
+			     int expG = bytes.g >> 7;
+			 
+			     int exponent = expR + expG;
+			 
+			     // The remaining 23 bits constitute the float's significand. They are spread across the green, blue and alpha channels
+			     int signifG = (bytes.g & 127) << 16;
+			     int signifB = bytes.b << 8;
+			 
+			     float significand = (signifG + signifB + bytes.a) / pow(2, 23);
+			 
+			     significand += 1;
+			 
+			     // We now know both the sign bit, the exponent and the significand of the float and can thus reconstruct it fully like so:
+			     return sign * significand * pow(2, exponent - 127);
+			}
+			
+			//
 			// h~(x,t) = h0(k) * exp( i * w(k) * t ) + h0'(-k) * exp( -i * w(k) * t );
 			//
 			float2 ht( int n, int m, float2 k, float t, float2 c_ht, vInput v )
 			{
-				float4 map = tex2Dlod( _MainTex, float4(n/_N,m/_N,0,0) );
-			
-				float2 h01 = (map.rg - 0.5) / 1000;	// h0(k);
-				float2 h02 = (map.ba - 0.5) / 1000;	// h0'(-k) ... conjungat of h0;
+				float2 	h01 = float2(0.0, 0.0);	
+				float2 	h02 = float2(0.0, 0.0);	
+						
+				//		h01.x = DecodeFloatRGBA( tex2Dlod( _MainTex, float4( 0.0 + n/_N * 0.5, 0.0 + m/_N * 0.5, 0.0, 0.0 ) ) ) - 0.5; // top left:  h0_norm.x
+				//		h01.y = DecodeFloatRGBA( tex2Dlod( _MainTex, float4( 0.5 + n/_N * 0.5, 0.0 + m/_N * 0.5, 0.0, 0.0 ) ) ) - 0.5; // top right: h0_norm.y				
+				//		h02.x = DecodeFloatRGBA( tex2Dlod( _MainTex, float4( 0.0 + n/_N * 0.5, 0.5 + m/_N * 0.5, 0.0, 0.0 ) ) ) - 0.5; // bottom left:  h0_conj.x
+				//		h02.y = DecodeFloatRGBA( tex2Dlod( _MainTex, float4( 0.5 + n/_N * 0.5, 0.5 + m/_N * 0.5, 0.0, 0.0 ) ) ) - 0.5; // bottom right: h0_conj.y
+					
+				h02.x = UnpackFloatRGBA( tex2Dlod( _MainTex, float4( 0.0 + n/_N * 0.5, 0.0 + m/_N * 0.5, 0.0, 0.0 ) ) );
+				h02.y = UnpackFloatRGBA( tex2Dlod( _MainTex, float4( 0.5 + n/_N * 0.5, 0.0 + m/_N * 0.5, 0.0, 0.0 ) ) );
+				
+				h01.x = UnpackFloatRGBA( tex2Dlod( _MainTex, float4( 0.0 + n/_N * 0.5, 0.5 + m/_N * 0.5, 0.0, 0.0 ) ) );
+				h01.y = UnpackFloatRGBA( tex2Dlod( _MainTex, float4( 0.5 + n/_N * 0.5, 0.5 + m/_N * 0.5, 0.0, 0.0 ) ) );
 				
 				float w = dispertion( k ) * t;	// w(k) * t;
 				

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+
 using System.Collections;
 using System.Collections.Generic;
 
@@ -69,12 +70,14 @@ public class ocean : MonoBehaviour
 
 		// ------------------------ //
 
-		Texture2D texture = new Texture2D( this.N, this.M );
+		Texture2D 	texture = new Texture2D( this.N * 2, this.M * 2 );
+					texture.filterMode = FilterMode.Point;
+					texture.anisoLevel = 1;
+
 		this.renderer.material.mainTexture = texture;
 
 		// ------------------------ //
 
-		Color 	h0_color 	= new Color();
 		Vector2 k_norm 		= new Vector2();
 		Vector2 k_conj 		= new Vector2();
 
@@ -96,12 +99,7 @@ public class ocean : MonoBehaviour
 
 			// ----------------------- //
 
-			h0_color.r = 0.5f + c_h0_norm.x * 0.5f * 10000f;
-			h0_color.g = 0.5f + c_h0_norm.y * 0.5f * 10000f;
-			h0_color.b = 0.5f + c_h0_conj.x * 0.5f * 10000f;
-			h0_color.a = 0.5f + c_h0_conj.y * 0.5f * 10000f;
-
-			texture.SetPixel( n, m, h0_color );
+			this.encodeH0Signed( n, m, c_h0_norm, c_h0_conj, texture );
 
 			// ----------------------- //
 
@@ -114,7 +112,7 @@ public class ocean : MonoBehaviour
 		// ------------------------ //
 
 		mesh.vertices = pos_ver;
-		texture.Apply();
+		texture.Apply(false);
 	}
 
 	/**
@@ -169,6 +167,7 @@ public class ocean : MonoBehaviour
 		
 		float kw_dot0 = k_unit.x * w_unit.x + k_unit.y * w_unit.y;
 		float kw_dot2 = kw_dot0 * kw_dot0;
+		float kw_dot4 = kw_dot2 * kw_dot2;
 		
 		float L0 = w_length2 / this.gravity;
 		float L2 = L0 * L0;
@@ -177,7 +176,7 @@ public class ocean : MonoBehaviour
 
 		// ---------- //		
 		
-		return this.maxAmplitude * ( Mathf.Exp( -1.0f / (k_length2 * L2) ) / k_length4 ) * kw_dot2 * Mathf.Exp( -k_length2 * l2 );
+		return this.maxAmplitude * ( Mathf.Exp( -1.0f / (k_length2 * L2) ) / k_length4 ) * kw_dot4 * Mathf.Exp( -k_length2 * l2 );
 	}
 
 	/**
@@ -213,14 +212,129 @@ public class ocean : MonoBehaviour
 	}
 
 	// ************************************************************************ //
-	// Calculation
+	// ENCODING
 	// ************************************************************************ //	
+
+	/**
+	 * 
+	 */
+	private void encodeH0Unsigned( int n, int m, Vector2 c_h0_norm, Vector2 c_h0_conj, Texture2D texture )
+	{
+		float[] h_nx = this.EncodeFloatRGBA( 0.5f + c_h0_norm.x * 0.5f );
+		float[] h_ny = this.EncodeFloatRGBA( 0.5f + c_h0_norm.y * 0.5f );
+		float[] h_cx = this.EncodeFloatRGBA( 0.5f + c_h0_conj.x * 0.5f );
+		float[] h_cy = this.EncodeFloatRGBA( 0.5f + c_h0_conj.y * 0.5f );
+		
+		// ------------------------ //
+		// top left: h0_norm.x
+		
+		Color 	h0_nx_color = new Color();
+		h0_nx_color.r = h_nx[0];
+		h0_nx_color.g = h_nx[1];
+		h0_nx_color.b = h_nx[2];
+		h0_nx_color.a = h_nx[3];
+		
+		texture.SetPixel( n, m, h0_nx_color );
+		
+		// ------------------------ //
+		// top right: h0_norm.y
+		
+		Color 	h0_ny_color = new Color();
+		h0_ny_color.r = h_ny[0];
+		h0_ny_color.g = h_ny[1];
+		h0_ny_color.b = h_ny[2];
+		h0_ny_color.a = h_ny[3];
+		
+		texture.SetPixel( n + this.N, m, h0_ny_color );
+		
+		// ------------------------ //
+		// bottom left: h0_conj.x
+		
+		Color 	h0_cx_color = new Color();
+		h0_cx_color.r = h_cx[0];
+		h0_cx_color.g = h_cx[1];
+		h0_cx_color.b = h_cx[2];
+		h0_cx_color.a = h_cx[3];
+		
+		texture.SetPixel( n, m + this.M, h0_cx_color );
+		
+		// ------------------------ //
+		// bottom right: h0_conj.y
+		
+		Color 	h0_cy_color = new Color();
+		h0_cy_color.r = h_cy[0];
+		h0_cy_color.g = h_cy[1];
+		h0_cy_color.b = h_cy[2];
+		h0_cy_color.a = h_cy[3];
+		
+		texture.SetPixel( n + this.N, m + this.M, h0_cy_color );
+	}
+	
+	/**
+	 * 
+	 */
+	private void encodeH0Signed( int n, int m, Vector2 c_h0_norm, Vector2 c_h0_conj, Texture2D texture )
+	{
+		// ------------------------ //
+		// top left: h0_norm.x		
+		
+		texture.SetPixel( n, m, this.EncodeFloatInColor( c_h0_norm.x ) );
+		
+		// ------------------------ //
+		// top right: h0_norm.y		
+		
+		texture.SetPixel( n + this.N, m, this.EncodeFloatInColor( c_h0_norm.y ) );
+		
+		// ------------------------ //
+		// bottom left: h0_conj.x		
+		
+		texture.SetPixel( n, m + this.M, this.EncodeFloatInColor( c_h0_conj.x ) );
+		
+		// ------------------------ //
+		// bottom right: h0_conj.y
+		
+		texture.SetPixel( n + this.N, m + this.M, this.EncodeFloatInColor( c_h0_conj.y ) );
+	}
+
+	/**
+	 * 
+	 */
+	float[] EncodeFloatRGBA( float val )
+	{
+		float[] kEncodeMul = new float[]{ 1.0f, 255.0f, 65025.0f, 160581375.0f };
+		float kEncodeBit = 1.0f / 255.0f; 
+
+		for( int i = 0; i < kEncodeMul.Length; ++i )
+		{
+			kEncodeMul[i] *= val;
+			kEncodeMul[i] = ( float )( kEncodeMul[i] - (int)( kEncodeMul[i] ) );
+		}
+		
+		// enc -= enc.yzww * kEncodeBit;
+		float[] yzww = new float[] { kEncodeMul[1], kEncodeMul[2], kEncodeMul[3], kEncodeMul[3] };
+
+		for( int i = 0; i < kEncodeMul.Length; ++i )
+		{
+			kEncodeMul[i] -= yzww[i] * kEncodeBit;
+		}
+		
+		return kEncodeMul;
+	}
+
+	/**
+	 * 
+	 */
+	private Color EncodeFloatInColor(float scalar)
+	{
+		byte[] floatBytes = System.BitConverter.GetBytes(scalar);
+		return new Color32(floatBytes[3], floatBytes[2], floatBytes[1], floatBytes[0]);
+	}
 	
 	/**
 	 * 
 	 */
 	void Update () 
 	{
-	
+		
 	}
 }
