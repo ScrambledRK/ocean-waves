@@ -1,0 +1,7 @@
+-cs dft
+-cp src
+
+-main DFTWaves
+-D no-compilation
+-D no-root
+-D real-position
