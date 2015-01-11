@@ -1,13 +1,19 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\dotpoint\ocean.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\dotpoint\ocean\OceanGrid.cs">
     <Files>
-      <File FileName="Assets\dotpoint\ocean.cs" Line="48" Column="3" />
-      <File FileName="Assets\dotpoint\ocean.shader" Line="1" Column="1" />
+      <File FileName="Assets\dotpoint\ocean\Ocean.cs" Line="191" Column="52" />
+      <File FileName="Assets\dotpoint\ocean\FFT.cs" Line="1" Column="1" />
+      <File FileName="Assets\dotpoint\ocean\OceanParams.cs" Line="1" Column="1" />
+      <File FileName="Assets\dotpoint\ocean\OceanDispertion.cs" Line="1" Column="1" />
+      <File FileName="Assets\dotpoint\ocean\OceanGrid.cs" Line="40" Column="59" />
+      <File FileName="Assets\dotpoint\ocean\OceanSpectrum.cs" Line="127" Column="48" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="D:\Projects\Dotpoint\Marooned\Unity-Test\OceanWaves\unity\Assets\dotpoint\ocean\Ocean.cs" line="207" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

@@ -46,7 +46,13 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\dotpoint\ocean.cs" />
+     <Compile Include="Assets\dotpoint\ocean\FFT.cs" />
+     <Compile Include="Assets\dotpoint\ocean\Ocean.cs" />
+     <Compile Include="Assets\dotpoint\ocean\OceanDispertion.cs" />
+     <Compile Include="Assets\dotpoint\ocean\OceanGrid.cs" />
+     <Compile Include="Assets\dotpoint\ocean\OceanParams.cs" />
+     <Compile Include="Assets\dotpoint\ocean\OceanSpectrum.cs" />
+     <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
      <None Include="Assets\dotpoint\ocean.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
