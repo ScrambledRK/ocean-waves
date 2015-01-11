@@ -44,6 +44,7 @@
 			{
 				float4 pos     	:SV_POSITION;
 				float3 norm		:NORMAL;
+				float  lpow		:TEXCOORD0;
 		    };
 			
 			// ************************************************************************ //
@@ -147,7 +148,7 @@
 		    	
 		    	float2	h 		= float2(0.0, 0.0);			// height		    	
 		    	float2	d		= float2(0.0, 0.0);			// x,y sharpness
-		    	float3	t		= float3(0.0, 0.0, 1.0);	// normal
+		    	float3	t		= float3(0.0, 0.0, 0.0);	// normal
 		    	
 		    	// ---------------- //
 		    	
@@ -184,6 +185,7 @@
 						
 						t.x += -k.x * c_hty;
 						t.y += -k.y * c_hty;						
+						//t.z += k.x * c_htx;						
 			    	}
 		        } 
 		        
@@ -196,8 +198,15 @@
 		        o.pos.y += d.y * -_sharpness;	
 		        o.pos.z = h.x * _amplitude;	
 		        
-		        o.norm 	= float3(0.0, 0.0, 1.0 ) - normalize( t );           	 
+		        o.norm 	= normalize( float3(0.0, 0.0, 1.0 ) - t );           	 
 		        o.pos 	= mul( UNITY_MATRIX_MVP, o.pos );
+
+				 // ---------------- //
+
+				float3 light = normalize(_WorldSpaceLightPos0.xyz);       
+
+	            o.lpow = dot( light, mul( _Object2World, o.norm ) );
+	            o.lpow = min( 1, max( o.lpow, 0 ) );
 
 		        return o;
 		    }
@@ -210,11 +219,11 @@
 			// fragment shader
 			//
 			fixed4 frag( vOutput v ):COLOR 
-		    {
-		        float3  norm  = v.norm; //normalize( cross( ddx( v.opos ), ddy( v.opos ) ) );             
-	            float   lpow  = dot( normalize( _WorldSpaceLightPos0.xyz ), norm );
+		    {		    
+		        //float3  norm  = v.norm; //normalize( cross( ddx( v.opos ), ddy( v.opos ) ) );             
+	            //float   lpow  = dot( _WorldSpaceLightPos0.xyz, norm );
 
-	            return fixed4( 0.0, 0.0, 1.0, 1.0) * ( lpow * 0.7 + 0.3 );
+	            return fixed4( 0.0, 0.0, 1.0, 1.0) * ( v.lpow * 0.7 + 0.3 );
 		    }
 			
 			ENDCG

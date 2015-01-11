@@ -132,30 +132,65 @@ class DFTWaves
 				
 				this.vertices[n][m] = vertex;
 				
-				if( vertex.c_h0_norm.x < min_n.x || vertex.c_h0_norm.y < min_n.y )
+				// ------------------------------- //
+				// ------------------------------- //
+				
+				if( vertex.c_h0_norm.x < min_n.x  )
 				{
-					min_n = vertex.c_h0_norm;
+					min_n.x = vertex.c_h0_norm.x;
 				}
 				
-				if( vertex.c_h0_conj.x < min_c.x || vertex.c_h0_conj.y < min_c.y )
+				if( vertex.c_h0_norm.y < min_n.y )
 				{
-					min_c = vertex.c_h0_conj;
+					min_n.y = vertex.c_h0_norm.y;
 				}
 				
-				if( vertex.c_h0_norm.x > max_n.x || vertex.c_h0_norm.y > max_n.y )
+				//
+				
+				if( vertex.c_h0_conj.x < min_c.x  )
 				{
-					max_n = vertex.c_h0_norm;
+					min_c.x = vertex.c_h0_conj.x;
 				}
 				
-				if( vertex.c_h0_conj.x > max_c.x || vertex.c_h0_conj.y > max_c.y )
+				if( vertex.c_h0_conj.y < min_c.y )
 				{
-					max_c = vertex.c_h0_conj;
+					min_c.y = vertex.c_h0_conj.y;
+				}
+				
+				// ------------------------------- //
+				// ------------------------------- //
+				
+				if( vertex.c_h0_norm.x > max_n.x  )
+				{
+					max_n.x = vertex.c_h0_norm.x;
+				}
+				
+				if( vertex.c_h0_norm.y > max_n.y )
+				{
+					max_n.y = vertex.c_h0_norm.y;
+				}
+				
+				//
+				
+				if( vertex.c_h0_conj.x > max_c.x  )
+				{
+					max_c.x = vertex.c_h0_conj.x;
+				}
+				
+				if( vertex.c_h0_conj.y > max_c.y )
+				{
+					max_c.y = vertex.c_h0_conj.y;
 				}
 			}
 		}
 		
 		trace( min_n, min_c );
 		trace( max_n, max_c );
+		
+		trace( "range n.x:", max_n.x - min_n.x );
+		trace( "range n.y:", max_n.y - min_n.y );
+		trace( "range c.x:", max_c.x - min_c.x );
+		trace( "range c.y:", max_c.y - min_c.y );
 	}
 	
 	/**
